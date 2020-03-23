@@ -1,0 +1,29 @@
+Session id: n_centers_10-algorithm_kmeans-num_neighbors_1-branching_32-iterations_20-checks_75-target_precision_-1 at 2020-03-23 14:56:25
+	--> iteration 0 has been finished -- 1.004e-03s
+	--> iteration 1 has been finished -- 9.992e-04s
+	--> iteration 2 has been finished -- 9.990e-04s
+	--> iteration 3 has been finished -- 9.968e-04s
+	--> iteration 4 has been finished -- 1.001e-03s
+	--> iteration 5 has been finished -- 9.995e-04s
+	--> iteration 6 has been finished -- 1.001e-03s
+	--> iteration 7 has been finished -- 9.992e-04s
+	--> iteration 8 has been finished -- 1.000e-03s
+	--> iteration 9 has been finished -- 1.002e-03s
+	--> iteration 10 has been finished -- 9.980e-04s
+	--> iteration 11 has been finished -- 1.001e-03s
+	--> iteration 12 has been finished -- 0.000e+00s
+	--> iteration 13 has been finished -- 9.992e-04s
+	--> iteration 14 has been finished -- 9.999e-04s
+	--> iteration 15 has been finished -- 1.001e-03s
+	--> iteration 16 has been finished -- 1.003e-03s
+	--> iteration 17 has been finished -- 1.001e-03s
+	--> iteration 18 has been finished -- 9.990e-04s
+	--> iteration 19 has been finished -- 9.973e-04s
+	--> iteration 20 has been finished -- 0.000e+00s
+
+Evaluation time per iteration:
+	AVG. = 0.0005834102630615234s
+	STD. = 0.0004930745234740202s
+Assignment time per iteration:
+	AVG. = 0.00033328930536905926s
+	STD. = 0.0004713429631093624s
