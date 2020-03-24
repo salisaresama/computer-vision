@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from ann.cluster import CustomKMeans
+from pylib.ann.cluster import CustomKMeans
 
 
 if __name__ == '__main__':
@@ -10,14 +10,14 @@ if __name__ == '__main__':
     print(f'Descriptors format: {X.shape}')
 	
 	# Evaluate
-    METHOD = 'kmeans'
+    METHOD = 'exact'
     print(f'Method: {METHOD}')
     km = CustomKMeans(
     	n_centers=32000, 
     	method=METHOD,
     	nn_autotune=0.99,
     	nn_checks=100,
-    	nn_kd_trees=32,
+    	nn_kd_trees=64,
     	nn_km_branching=64,
     	nn_km_iter=20,
     	verbose=True
