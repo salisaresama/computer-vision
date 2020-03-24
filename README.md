@@ -6,5 +6,4 @@ ___
 
 ## Fast Nearest Neighbors Algorithms
 
-  * The notebook:
-  * HTML version of the notebook: 
+TBD
