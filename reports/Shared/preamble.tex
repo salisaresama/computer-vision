@@ -1,0 +1,72 @@
+\documentclass[10pt]{beamer}
+\usepackage[varg]{txfonts}
+%\usepackage[czech]{babel}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+%%\usepackage[latin2]{inputenc} % Zapne kodovani cestiny a deleni slov.
+\usepackage{beamertexpower}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{changepage} % for putting images inside itemize/enumerate environments
+\usepackage{hyperref} 
+
+%%%\mode<presentation>
+%%%{
+%%%  \usetheme{Darmstadt}
+%%%  \useoutertheme{infolines}
+%%%  \setbeamercovered{transparent}
+%%%}
+
+\definecolor{beamer@blendedblue}{rgb}{0.5, 0, 0}
+\mode<presentation>
+{
+  \usetheme{CambridgeUS}
+  \useoutertheme{infolines}
+  \setbeamercovered{transparent}
+  \setbeamercolor{structure}{fg=beamer@blendedblue}
+}
+
+
+\newcommand{\LogoFigs}{./Figures/Logo}
+\newcommand{\Figs}{./Figures}
+
+\newcommand{\slideCite}[1]{\raisebox{1ex}{\tiny \cite{#1}}}
+\newenvironment{slideFrame}[1]{\begin{frame}\frametitle{#1}}{\end{frame}}
+
+\setbeamertemplate{caption}[numbered]
+
+\author{Vladislav Belov}
+\institute[belovvla@fjfi.cvut.cz]{FNSPE CTU}
+\titlegraphic{\includegraphics[height=1.2cm]{\LogoFigs/CVUTLogoSmall}}
+
+\newenvironment{VerbExample}[1]{\begin{exampleblock}{#1}\semiverbatim}{\endsemiverbatim\end{exampleblock}}
+
+\newcommand{\backupbegin}{
+	\newcounter{framenumberappendix}
+	\setcounter{framenumberappendix}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+	\addtocounter{framenumberappendix}{-\value{framenumber}}
+	\addtocounter{framenumber}{\value{framenumberappendix}} 
+}
+
+% Image environment to put it inside itemize/enumerate
+\makeatletter
+\newenvironment{restoretext}%
+    {\@parboxrestore%
+     \begin{adjustwidth}{}{\leftmargin}%
+    }{\end{adjustwidth}
+     }
+\makeatother
+
+% Bibliography font sizes
+\setbeamerfont{bibliography item}{size=\footnotesize}
+\setbeamerfont{bibliography entry author}{size=\footnotesize}
+\setbeamerfont{bibliography entry title}{size=\footnotesize}
+\setbeamerfont{bibliography entry location}{size=\footnotesize}
+\setbeamerfont{bibliography entry note}{size=\footnotesize}
