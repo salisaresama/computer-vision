@@ -1,0 +1,29 @@
+Session id: n_centers_10-algorithm_kdtree-num_neighbors_1-trees_32-checks_75-target_precision_-1 at 2020-03-23 23:24:39
+	--> iteration 0 has been finished -- 7.999e-03s
+	--> iteration 1 has been finished -- 8.009e-03s
+	--> iteration 2 has been finished -- 6.999e-03s
+	--> iteration 3 has been finished -- 7.995e-03s
+	--> iteration 4 has been finished -- 7.001e-03s
+	--> iteration 5 has been finished -- 7.003e-03s
+	--> iteration 6 has been finished -- 8.001e-03s
+	--> iteration 7 has been finished -- 7.002e-03s
+	--> iteration 8 has been finished -- 7.046e-03s
+	--> iteration 9 has been finished -- 6.950e-03s
+	--> iteration 10 has been finished -- 7.002e-03s
+	--> iteration 11 has been finished -- 7.006e-03s
+	--> iteration 12 has been finished -- 7.006e-03s
+	--> iteration 13 has been finished -- 6.999e-03s
+	--> iteration 14 has been finished -- 6.998e-03s
+	--> iteration 15 has been finished -- 7.000e-03s
+	--> iteration 16 has been finished -- 6.995e-03s
+	--> iteration 17 has been finished -- 7.001e-03s
+	--> iteration 18 has been finished -- 6.001e-03s
+	--> iteration 19 has been finished -- 7.009e-03s
+	--> iteration 20 has been finished -- 6.999e-03s
+
+Evaluation time per iteration:
+	AVG. = 0.006668269634246826s
+	STD. = 0.0004629711593953994s
+Assignment time per iteration:
+	AVG. = 0.0006655653317769369s
+	STD. = 0.00047062974460311996s

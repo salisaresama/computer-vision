@@ -5,6 +5,7 @@ from time import time
 from pyflann import FLANN
 from datetime import datetime
 from pathlib import Path
+from sklearn.neighbors import NearestNeighbors
 
 
 class CustomKMeans(object):
@@ -29,7 +30,7 @@ class CustomKMeans(object):
         # FLANN hyperparameters
         # The whole list of FLANN parameters is available here:
         # https://github.com/mariusmuja/flann/blob/master/src/cpp/flann/flann.h
-        self.flann = None
+        self.nn_search = None
         self.params = {
             'kdtree': {
                 'algorithm': 'kdtree',
@@ -54,7 +55,16 @@ class CustomKMeans(object):
         
         # Set target precision in case of autotuning
         if method in {'kmeans', 'kdtree'}:
-            self.flann = FLANN()
+            self.nn_search = FLANN()
+        else:
+            self.nn_search = NearestNeighbors(
+                n_neighbors=1,
+                algorithm='kd_tree',
+                leaf_size=nn_checks,
+                metric='minkowski',
+                p=2,
+                n_jobs=1
+            )
         
         self.n_centers = n_centers
         self.method = method
@@ -103,7 +113,7 @@ class CustomKMeans(object):
         self.centers_ = np.random.uniform(
             np.min(data), np.max(data), 
             size=self.n_centers * self._dim
-        ).reshape(self.n_centers, self._dim).astype(data.dtype)
+        ).reshape(self.n_centers, self._dim).astype(data.dtype)         
         
         # Start fitting
         self.__reset_stats()
@@ -118,20 +128,13 @@ class CustomKMeans(object):
 
             # Evaluate labels and squared distances
             if self.method in {'kmeans', 'kdtree'}:
-                self.labels_, sqdist = self.flann.nn(
+                self.labels_, sqdist = self.nn_search.nn(
                     self.centers_, data, **self.params[self.method])
             else:
-                self.labels_ = np.ndarray((self._n_samples,), dtype=np.int)
-                sqdist = np.ndarray((self._n_samples,))
-                for p in range(self._n_samples):
-                    sqpdist = cdist(data[p].reshape(1, -1), self.centers_, 
-                                    metric='sqeuclidean')
-                    self.labels_[p] = sqpdist.argmin(axis=1)[0]
-                    sqdist[p] = sqpdist[0, self.labels_[p]]
-                # Vectrorised approach
-                # sqpdist = cdist(data, self.centers_, metric='sqeuclidean')
-                # self.labels_ = sqpdist.argmin(axis=1)
-                # sqdist = sqpdist[np.arange(self._n_samples), self.labels_]
+                self.nn_search.fit(self.centers_)
+                sqdist, self.labels_ = self.nn_search.kneighbors(data, 
+                                                                 return_distance=True)
+                sqdist, self.labels_ = sqdist.ravel()**2, self.labels_.ravel()
             toc = time()
             t1 = toc - tic_it
             
@@ -156,7 +159,8 @@ class CustomKMeans(object):
                 print(self.log_[-1])
                     
             # Check convergence
-            p = np.bincount(self.labels_, weights=sqdist).sum() / data.shape[0]
+            p = np.bincount(self.labels_, weights=sqdist).sum()
+            p /= self._n_samples
             if it > 1 and self.stats_['measure'][-2] - \
                     self.stats_['measure'][-1] < self.tol_progress:
                 progress -= 1
@@ -193,7 +197,3 @@ class CustomKMeans(object):
             t_assign = np.asarray(self.stats_['assignment'])
             rep = f'\nEvaluation time per iteration:\n\tAVG. = {t_eval.mean()}s\n\tSTD. = {t_eval.std()}s\nAssignment time per iteration:\n\tAVG. = {t_assign.mean()}s\n\tSTD. = {t_assign.std()}s'
         return rep
-
-
-if __name__=='__main__':
-	pass
