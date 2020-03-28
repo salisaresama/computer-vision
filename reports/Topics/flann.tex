@@ -167,17 +167,17 @@
 \subsection{Discussion of Results}
 
 \begin{frame}
-	The experiment on the previous slide leads the following conclusions:
+	The experiment on the previous slide leads to the following conclusions:
 	
 	\begin{itemize}
 		\item For the given set of parameters and data set, the priority search $k$-means tree is faster than the k-d forest for the cost of being less accurate. Nonetheless, its accuracy is comparable to that of a k-d forest approach.
 		\item Convergence of ANN-based methods is highly dependent on initial parameters and poor parameter choice might prevent them from progress towards the optimal solution. Examples from Fig.~\ref{fig:comparison} show that convergence of the $k$-means method might be faster with ANN search than that with exact assignment.
 	\end{itemize}
 	
-	Even though the convergence of $k$-means might be faster with ANN assignment during first iterations due to shuffling of poorly labeled points, the cost function is no longer guaranteed to be optimized. The guarantee vanishes by cause of the fact that labels are no longer optimal before cluster centers rearrangement. To prevent the cost function from increasing, we introduce simple post-processing of ANN-based labels:
+	Even though the convergence of $k$-means might be faster with ANN assignment during first iterations due to shuffling of poorly labeled points, the cost function is no longer guaranteed to be optimized (see Fig.~\ref{fig:comparison_fix}). The guarantee vanishes by cause of the fact that labels are no longer optimal before cluster centers rearrangement. To prevent the cost function from increasing, we introduce simple post-processing of ANN-based labels:
 	
 	\begin{itemize}
-		\item[-] For points whose new labels are different from that of the previous iteration, check if the newly assigned centers are indeed closer than the previous ones. If not, old labels are retained. 
+		\item[-] For points whose new labels are different from that of the previous iteration, we check if their newly assigned centers are indeed closer than the previous ones. If not, old labels are retained. 
 	\end{itemize}
 \end{frame}
 
@@ -188,8 +188,21 @@
 	
 	\begin{figure}
 		\centering
-		\includegraphics[width=1.0\linewidth]{../images/flann/comparison}
-		\caption{\footnotesize Performance of the priority search $k$-means tree with and without the proposed post-processing of assigned labels.}
+		\includegraphics[width=0.975\linewidth]{../images/flann/comparison_fix}
+		\caption{
+			\scriptsize Performance of the priority search $k$-means tree with and without the proposed post-processing of labels. The diagram confirms that the cost function can increase when the ANN-based label assignment is used. Moreover, it shows that the proposed post-processing procedure fixes the problem. Used parameters:			
+			{\tiny
+				\centering
+				\begin{tabular}{| c || c | c | c | c | c |}
+					\hline
+					Fix & B & I & CB & C & (AVG. | STD.) NN time, [s] \\
+					\hline
+					\hline			
+					False & 8 & 10 & 0.2 & 25 & 63.06 | 11.1 \\
+					True & 8 & 10 & 0.2 & 25 & 63.51 | 8.61 \\
+					\hline  
+				\end{tabular}
+		}}
 		\label{fig:comparison_fix}
 	\end{figure}
 
