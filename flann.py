@@ -27,4 +27,4 @@ if __name__ == '__main__':
     print(km.time_report())
     df = pd.DataFrame(km.stats_)
     df = df.reset_index(drop=False)
-    df.to_csv(f'./data/sift_comparison_{km.session_id}.csv', index=False)
+    df.to_csv(f'./data/sift_comparison_{km.session_id}_nofix.csv', index=False)
