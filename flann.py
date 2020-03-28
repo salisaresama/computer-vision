@@ -20,11 +20,11 @@ if __name__ == '__main__':
         nn_kd_trees=64,
         nn_km_branching=8,
         nn_km_iter=10,
-        apply_fix=True,
+        apply_fix=False,
         verbose=True
     )
     km.fit(X)
     print(km.time_report())
     df = pd.DataFrame(km.stats_)
     df = df.reset_index(drop=False)
-    df.to_csv(f'./data/sift_comparison_{km.session_id}_fix.csv', index=False)
+    df.to_csv(f'./data/sift_comparison_{km.session_id}_nofix.csv', index=False)
