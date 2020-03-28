@@ -31,7 +31,6 @@ class CustomKMeans(object):
         # FLANN hyperparameters
         # The whole list of FLANN parameters is available here:
         # https://github.com/mariusmuja/flann/blob/master/src/cpp/flann/flann.h
-        self.nn_search = None
         self.params = {
             'kdtree': {
                 'algorithm': 'kdtree',
@@ -54,7 +53,7 @@ class CustomKMeans(object):
             }
         }
         
-        # Set target precision in case of autotuning
+        # Nearest neighbors search method set up
         if method in {'kmeans', 'kdtree'}:
             self.nn_search = FLANN()
         else:
@@ -151,7 +150,6 @@ class CustomKMeans(object):
                         self.sqdist_ = sqdist
                         if len(to_leave):
                             self.sqdist_[to_leave] = sqdist_checked[incorrect]
-                    pass
                 else:
                     self.labels_, self.sqdist_ = labels_, sqdist
             else:
@@ -186,17 +184,16 @@ class CustomKMeans(object):
             # Check convergence
             p = np.bincount(self.labels_, weights=self.sqdist_).sum()
             p /= self._n_samples
-            if it > 1 and self.stats_['measure'][-2] - \
+            self.__update_stats(p, t1, t2)
+            if it >= 1 and self.stats_['measure'][-2] - \
                     self.stats_['measure'][-1] < self.tol_progress:
                 progress -= 1
                 if not progress:
-                    self.__update_stats(p, t1, t2)
                     print(f'\nIteration {it}: '
                           f'no progress during '
                           f'last {self.max_iter_no_progress} iterations')
                     break
             else:
-                self.__update_stats(p, t1, t2)
                 progress = self.max_iter_no_progress
         
         # Save the log
