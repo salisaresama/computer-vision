@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Optional
-from scipy.spatial.distance import cdist
+# from scipy.spatial.distance import cdist
 from time import time
 from pyflann import FLANN
 from datetime import datetime
@@ -18,10 +18,11 @@ class CustomKMeans(object):
                  tol_progress: np.float = 1e-3, 
                  random_state: Optional[int] = 17,
                  nn_km_branching: int = 32,  # branching for k-means tree
-                 nn_km_iter: int = 20, # number of iterations per k-means step
+                 nn_km_iter: int = 20,  # number of iterations per k-means step
                  nn_kd_trees: int = 32,  # number of randomized trees to use
                  nn_checks: int = 75,  # number of leaves to check in the search
                  nn_autotune: np.float = -1,  # auto-tuning of nn parameters
+                 apply_fix: bool = False,
                  save_log: bool = True,
                  verbose: bool = False):
         
@@ -78,12 +79,14 @@ class CustomKMeans(object):
         self._n_samples = None
         self.centers_ = None
         self.labels_ = None
+        self.sqdist_ = None
         self.stats_ = None
         self.session_id = f'n_centers_{self.n_centers}-' + \
             '-'.join(
-            [f'{param}_{val}' for param, val 
-             in self.params[self.method].items()]
-        )
+                [f'{param}_{val}' for param, val
+                 in self.params[self.method].items()]
+            )
+        self.apply_fix = apply_fix
         self.log_ = []
         self.save_log = save_log
         
@@ -93,6 +96,7 @@ class CustomKMeans(object):
             'evaluation': [],  # time to evaluate labels
             'assignment': [],  # time to re-assign labels
             'n_centers': self.n_centers,
+            'apply_fix': self.apply_fix,
             **self.params[self.method]
         }
     
@@ -128,13 +132,34 @@ class CustomKMeans(object):
 
             # Evaluate labels and squared distances
             if self.method in {'kmeans', 'kdtree'}:
-                self.labels_, sqdist = self.nn_search.nn(
+                labels_, sqdist = self.nn_search.nn(
                     self.centers_, data, **self.params[self.method])
+                if self.apply_fix and it > 0:
+                    reassigned = np.where(labels_ != self.labels_)[0]
+                    if len(reassigned):
+                        sqdist_checked = np.linalg.norm(
+                            data[reassigned, :] -
+                            self.centers_[self.labels_[reassigned], :],
+                            axis=1
+                        ) ** 2
+                        correct = sqdist[reassigned] <= sqdist_checked.ravel()
+                        incorrect = ~correct
+                        to_assign = reassigned[correct]
+                        to_leave = reassigned[incorrect]
+                        if len(to_assign):
+                            self.labels_[to_assign] = labels_[to_assign]
+                        self.sqdist_ = sqdist
+                        if len(to_leave):
+                            self.sqdist_[to_leave] = sqdist_checked[incorrect]
+                    pass
+                else:
+                    self.labels_, self.sqdist_ = labels_, sqdist
             else:
                 self.nn_search.fit(self.centers_)
-                sqdist, self.labels_ = self.nn_search.kneighbors(data, 
-                                                                 return_distance=True)
-                sqdist, self.labels_ = sqdist.ravel()**2, self.labels_.ravel()
+                self.sqdist_, self.labels_ = self.nn_search.kneighbors(
+                    X=data, return_distance=True)
+                self.sqdist_, self.labels_ = \
+                    self.sqdist_.ravel()**2, self.labels_.ravel()
             toc = time()
             t1 = toc - tic_it
             
@@ -159,7 +184,7 @@ class CustomKMeans(object):
                 print(self.log_[-1])
                     
             # Check convergence
-            p = np.bincount(self.labels_, weights=sqdist).sum()
+            p = np.bincount(self.labels_, weights=self.sqdist_).sum()
             p /= self._n_samples
             if it > 1 and self.stats_['measure'][-2] - \
                     self.stats_['measure'][-1] < self.tol_progress:
@@ -195,5 +220,9 @@ class CustomKMeans(object):
         else:
             t_eval = np.asarray(self.stats_['evaluation'])
             t_assign = np.asarray(self.stats_['assignment'])
-            rep = f'\nEvaluation time per iteration:\n\tAVG. = {t_eval.mean()}s\n\tSTD. = {t_eval.std()}s\nAssignment time per iteration:\n\tAVG. = {t_assign.mean()}s\n\tSTD. = {t_assign.std()}s'
+            rep = f'\nEvaluation time per iteration:\n' \
+                f'\tAVG. = {t_eval.mean()}s\n' \
+                f'\tSTD. = {t_eval.std()}s\n' \
+                f'Assignment time per iteration:\n' \
+                f'\tAVG. = {t_assign.mean()}s\n\tSTD. = {t_assign.std()}s'
         return rep
