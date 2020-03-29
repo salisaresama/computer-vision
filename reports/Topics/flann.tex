@@ -8,7 +8,7 @@
 	\end{block}
 	
 	\begin{block}{Notes on Implementation}
-		Experiments were performed in Python 3.8.1, using the PyFLANN library. Technical details are available on our  \href{https://github.com/salisaresama/computer-vision/blob/flann-32k/flann.ipynb}{{\color{blue} \underline{GitHub}}} repository.
+		Experiments were performed in Python 3.8.1, using the PyFLANN library. Technical details are available on our  \href{https://github.com/salisaresama/computer-vision/blob/master/flann.ipynb}{{\color{blue} \underline{GitHub}}} repository.
 	\end{block}
 	
 \end{frame}
@@ -21,7 +21,7 @@
 	
 	\begin{block}{What did we do?}
 		\begin{enumerate}
-			\item In the scope of this work, naive implementation of the $k$-means \cite{Lloyd1982} clustering algorithm was performed by means of assigning points to clusters using various techniques for nearest neighbors search (see \href{https://github.com/salisaresama/computer-vision/blob/flann-32k/pylib/ann/cluster.py}{{\color{blue} \underline{the respective GitHub page}}}):
+			\item In the scope of this work, naive implementation of the $k$-means \cite{Lloyd1982} clustering algorithm was performed by means of assigning points to clusters using various techniques for nearest neighbors search (see \href{https://github.com/salisaresama/computer-vision/blob/master/pylib/ann/cluster.py}{{\color{blue} \underline{the respective GitHub page}}}):
 			\begin{itemize}
 				\item k-d forest;
 				\item priority search $k$-means tree;
@@ -140,7 +140,7 @@
 				\end{tabular}
 			\end{table}
 			
-			\item For the sake of being able to provide at least some margin for comparison of results, we have also performed mini-batch $k$-means clustering \cite{Sculley2010} with same initial cluster centers. It took the algorithm from 6 to 8 hours to converge in 890 iterations. The resulting value of the cost function is equal to 55864.63 (for more information, visit \href{https://github.com/salisaresama/computer-vision/blob/flann-32k/_aux/kmeans_std.ipynb}{{\color{blue} \underline{here}}}).
+			\item For the sake of being able to provide at least some margin for comparison of results, we have also performed mini-batch $k$-means clustering \cite{Sculley2010} with same initial cluster centers. It took the algorithm from 6 to 8 hours to converge in 890 iterations. The resulting value of the cost function is equal to 55864.63 (for more information, visit \href{https://github.com/salisaresama/computer-vision/blob/master/_aux/kmeans_std.ipynb}{{\color{blue} \underline{here}}}).
 		\end{itemize}
 		
 	\end{block}
