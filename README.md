@@ -6,4 +6,5 @@ ___
 
 ## Fast Nearest Neighbors Algorithms
 
-TBD
+  * The notebook with a few technical details is [here](./flann.ipynb)
+  * The report on the topic can be found [here](./reports/report.pdf)
