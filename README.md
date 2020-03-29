@@ -6,5 +6,5 @@ ___
 
 ## Fast Nearest Neighbors Algorithms
 
-  * The notebook is [here](./flann.ipynb)
-  * The HTML version of the notebook is [here](https://htmlpreview.github.io/?https://github.com/salisaresama/computer-vision/blob/master/flann.html)
+  * The notebook with a few technical details is [here](./flann.ipynb)
+  * The report on the topic can be found [here](./reports/report.pdf)
