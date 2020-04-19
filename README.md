@@ -4,7 +4,12 @@ This repository is dedicated for subject "Computer Vision" for Ph.D. students. T
 
 ___
 
-## Fast Nearest Neighbors Algorithms
+## Fast Nearest Neighbors Algorithms (FLANN)
+
+  * The notebook with a few technical details is [here](./flann.ipynb)
+  * The LaTeX file containing the core of the report can be found [here](./reports/Topics/flann.tex)
+  
+## Product Quantization (IVFPQ)
 
   * The notebook with a few technical details is [here](./flann.ipynb)
   * The report on the topic can be found [here](./reports/report.pdf)
