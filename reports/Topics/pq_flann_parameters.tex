@@ -1,0 +1,36 @@
+\subsection*{FLANN Parameters}
+
+\begin{frame}
+	\frametitle{FLANN Parameters in Our Experiments}
+	
+\begin{itemize}
+	\item FLANN-KDF ($T$ - number of randomized trees, $C$ - number of leaves to check in one search):
+	\begin{table}
+		\small
+		\begin{tabular}{|| c | c ||}
+			\hline
+			T & C \\
+			\hline
+			\hline			
+			32 & 32 \\
+			\hline  
+		\end{tabular}
+	\caption{FLANN-KDF parameters.}
+	\label{tab:flann-kdf-par}
+	\end{table}
+	\item FLANN-KMT ($B$ - branching factor for $k$-means tree construction, $I$ - number of iterations for the tree construction, $CB$ - cluster boundary index for the search in the tree, $C$ - number of leaves to check in one search):
+	\begin{table}
+		\small
+		\begin{tabular}{|| c | c | c | c ||}
+			\hline
+			B & I & CB & C \\
+			\hline
+			\hline			
+			100 & 20 & 0.2 & 32  \\
+			\hline  
+		\end{tabular}
+	\caption{FLANN-KMT parameters.}
+	\label{tab:flann-kmt-par}
+	\end{table}
+\end{itemize}
+\end{frame}
