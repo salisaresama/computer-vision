@@ -11,5 +11,5 @@ ___
   
 ## Product Quantization (IVFPQ)
 
-  * The notebook with a few technical details is [here](./product_quantization.ipynb)
+  * The notebook is [here](./product_quantization.ipynb)
   * The report on the topic can be found [here](./reports/report.pdf)
