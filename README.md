@@ -11,5 +11,10 @@ ___
   
 ## Product Quantization (IVFPQ)
 
-  * The notebook is [here](./product_quantization.ipynb)
+  * The notebook is [here](./pq_comparison.ipynb)
+  * The LaTeX file containing the core of the report can be found [here](./reports/Topics/product_quantization.tex)
+
+## KGraph
+
+  * The notebook is [here](./kgraph.ipynb)
   * The report on the topic can be found [here](./reports/report.pdf)
