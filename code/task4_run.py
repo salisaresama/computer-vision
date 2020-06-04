@@ -1,11 +1,13 @@
 import pandas as pd
 import numpy as np
+import os
 from cluster import CustomKMeans
 
 
 if __name__ == '__main__':
+    os.system('tar -xf data/sift.zip -C data/')
     # Reading the SIFT data set
-    X = np.fromfile('./data/SIFT.dat', dtype=np.uint8).astype(np.float32)
+    X = np.fromfile('../data/SIFT.dat', dtype=np.uint8).astype(np.float32)
     X = X.reshape((-1, 128))
     print(f'Descriptors format: {X.shape}')
 

@@ -7,7 +7,6 @@ RUN mkdir /data
 
 # Get data
 RUN wget http://cmp.felk.cvut.cz/\~chum/XEP33SAM/sift.zip -P /data/
-RUN tar -xf data/sift.zip -C data/
 
 # Add code
 ADD cluster.py /code
