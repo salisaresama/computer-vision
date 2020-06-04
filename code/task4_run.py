@@ -16,6 +16,7 @@ if __name__ == '__main__':
     km = CustomKMeans(
         n_centers=100,
         max_iter=30,
+        gpu_idx=1,
         method=METHOD,
         verbose=True
     )
