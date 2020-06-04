@@ -5,9 +5,6 @@ from cluster import CustomKMeans
 
 
 if __name__ == '__main__':
-    print(os.listdir('.'))
-    print(os.listdir('../data'))
-    os.system('tar -xf ../data/sift.zip -C ../data/')
     # Reading the SIFT data set
     X = np.fromfile('../data/SIFT.dat', dtype=np.uint8).astype(np.float32)
     X = X.reshape((-1, 128))
