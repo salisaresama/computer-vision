@@ -14,8 +14,8 @@ if __name__ == '__main__':
     METHOD = 'exact-gpu'
     print(f'Method: {METHOD}')
     km = CustomKMeans(
-        n_centers=10,
-        max_iter=5,
+        n_centers=100,
+        max_iter=30,
         method=METHOD,
         verbose=True
     )

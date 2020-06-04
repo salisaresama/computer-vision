@@ -25,6 +25,7 @@ class CustomKMeans(object):
                  nn_autotune: np.float = -1,  # auto-tuning of nn parameters
                  apply_fix: bool = False,
                  save_log: bool = True,
+                 gpu_idx: int = 0,
                  verbose: bool = False):
         
         assert method in {'kmeans', 'kdtree', 'exact', 'exact-gpu'}
@@ -57,7 +58,11 @@ class CustomKMeans(object):
                     'algorithm': 'exact-gpu'
                 }
         }
-        
+
+        # GPU parameters
+        self.gpu = None
+        self.gpu_idx = gpu_idx
+
         # Nearest neighbors search method set up
         if method in {'kmeans', 'kdtree'}:
             self.nn_search = pyflann.FLANN()
@@ -72,6 +77,7 @@ class CustomKMeans(object):
             )
         else:
             self.nn_search = None
+            self.gpu = faiss.StandardGpuResources()
         
         self.n_centers = n_centers
         self.method = method
@@ -167,7 +173,9 @@ class CustomKMeans(object):
                 self.sqdist_, self.labels_ = \
                     self.sqdist_.ravel()**2, self.labels_.ravel()
             else:
-                self.nn_search = faiss.IndexFlatL2(self._dim)
+                index_flat = faiss.IndexFlatL2(self._dim)
+                self.nn_search = faiss.index_cpu_to_gpu(self.gpu, self.gpu_idx,
+                                                        index_flat)
                 self.nn_search.add(self.centers_)
                 self.sqdist_, self.labels_ = self.nn_search.search(data, 1)
                 self.sqdist_, self.labels_ = \
