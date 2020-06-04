@@ -2,8 +2,8 @@ import numpy as np
 from typing import Optional
 # from scipy.spatial.distance import cdist
 import faiss
+import pyflann
 from time import time
-from pyflann import FLANN
 from datetime import datetime
 from pathlib import Path
 from sklearn.neighbors import NearestNeighbors
@@ -60,7 +60,7 @@ class CustomKMeans(object):
         
         # Nearest neighbors search method set up
         if method in {'kmeans', 'kdtree'}:
-            self.nn_search = FLANN()
+            self.nn_search = pyflann.FLANN()
         elif method == 'exact':
             self.nn_search = NearestNeighbors(
                 n_neighbors=1,
@@ -214,7 +214,8 @@ class CustomKMeans(object):
         # Save the log
         self.log_.append(self.time_report())
         if self.save_log:
-            path = Path(f'./logs/{self.__class__.__name__}/').resolve()
+            path = Path(f'../output/logs/'
+                        f'{self.__class__.__name__}/').resolve()
             path.mkdir(parents=True, exist_ok=True)
             with open(f'{str(path)}/{self.session_id}.txt', 'w') as file:
                 for line in self.log_:
