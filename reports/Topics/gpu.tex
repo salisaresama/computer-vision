@@ -6,7 +6,7 @@
 		\begin{itemize}
 			\item Timing comparison for the k-means task on SIFT2M data evaluated before;
 			\item k-NN graph construction with various indices from \texttt{faiss} and evaluation of timings and precision on Oxford105K data set.
-			\item Implementation of the shortest path algorithm within the k-NN graph based on (12) of \cite{Johnson2017}. Oxford105K data was utilized.
+			\item Implementation of the smooth path algorithm within the k-NN graph based on (12) of \cite{Johnson2017}. Oxford105K data was utilized.
 		\end{itemize}
 	\end{block}
 	
@@ -60,4 +60,27 @@ Once again we perform naive $k$-means iterations on the SIFT2M data set with $k 
 
 \begin{frame}
 	
+\end{frame}
+
+
+\subsection{Paths}
+
+
+\begin{frame}
+\begin{block}{Smooth Path Evaluation}
+	Another exercise we have performed in the scope of this work is the implementation of the path search given by equation (12) in \cite{Johnson2017}. We have utilized a depth-first search with cut-off to generate simple paths in the k-NN graph. To stress the preference on path smoothness, the choice was made according to cost function $\min_{P} max_{i} d_{p_{i}, p_{i+1}}$ where $P = (p_{1}, p_{2}, \dots, p_{n})$ denotes paths between the source and the target and $n <$ cut-off value. An example is shown in Fig.~\ref{fig:smooth_path}.
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.85\linewidth,height=0.65\textheight]{../images/knn/path}
+\caption{Sample of the smooth path search between the source image and the target image within the exact 10-NN graph of the whole Oxford105K data set; cut-off value was set to 7.}
+\label{fig:smooth_path}
+\end{figure}
+
 \end{frame}
