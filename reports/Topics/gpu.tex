@@ -90,8 +90,8 @@ Once again we perform naive $k$-means iterations on the SIFT2M data set with $k 
 \centering
 \includegraphics[width=0.85\linewidth,height=0.65\textheight]{../images/knn/timings}
 \caption{Timings for $k$-NN graph construction (query time on the left-hand side, index training and point addition time on the right-hand side) on Oxford105K data set. It is clear that, in terms of time, \texttt{faiss} powered by GPU outperforms KGraph \cite{Dong2011} we experimented with before (recall that it took KGraph approx. 105s to finish the search for 100 nearest neighbors).}
+\label{fig:knn_timing}
 \end{figure}
-	
 \end{frame}
 
 
