@@ -2,7 +2,7 @@
 
 \begin{frame}
 	\begin{block}{Fair AI Similarity Search (\texttt{faiss})}
-		In this report, we cover results of our experiments with \texttt{faiss}\footnotemark \, library \cite{Johnson2017} for the nearest neighbors search. The report includes the following:
+		In this report, we cover results of our experiments with \texttt{faiss}\footnotemark \, library \cite{Johnson2017} powered by GPU\footnotemark \, for the nearest neighbors search. The report includes the following:
 		\begin{itemize}
 			\item Timing comparison for the k-means task on SIFT2M data evaluated before;
 			\item k-NN graph construction with various indices from \texttt{faiss} and evaluation of timings and precision on Oxford105K data set.
@@ -14,8 +14,9 @@
 		The respective implementation is available on our \href{https://github.com/salisaresama/computer-vision}{{\color{blue}\underline{GitHub}}} page.
 	\end{block}
 	
-	\addtocounter{footnote}{-1}
+	\addtocounter{footnote}{-2}
 	\stepcounter{footnote}\footnotetext{Link to the Fair AI Similarity Search library we used: \href{https://github.com/facebookresearch/faiss}{{\color{blue}\underline{faiss}}}.}
+	\stepcounter{footnote}\footnotetext{NVIDIA GTX 1080Ti}
 \end{frame}
 
 
