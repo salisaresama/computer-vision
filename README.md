@@ -19,7 +19,7 @@ ___
   * The notebook is [here](./notebooks/kgraph.ipynb)
   * The LaTeX file containing the core of the report can be found [here](./reports/Topics/kgraph.tex)
 
-## KGraph
+## Fair AI Similarity Search (faiss) with GPU
 
   * The notebook is [here](./notebooks/knn_path.ipynb)
   * The report on the topic can be found [here](./reports/report.pdf)
