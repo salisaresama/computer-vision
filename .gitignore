@@ -1,4 +1,6 @@
 .idea/
 .ipynb_checkpoints/
 data/
+downloads/
+docker-mongo/
 __pycache__/

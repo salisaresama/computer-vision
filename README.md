@@ -6,15 +6,20 @@ ___
 
 ## Fast Nearest Neighbors Algorithms (FLANN)
 
-  * The notebook with a few technical details is [here](./flann.ipynb)
+  * The notebook with a few technical details is [here](./notebooks/flann.ipynb)
   * The LaTeX file containing the core of the report can be found [here](./reports/Topics/flann.tex)
   
-## Product Quantization (IVFPQ)
+## Product Quantization
 
-  * The notebook is [here](./pq_comparison.ipynb)
+  * The notebook is [here](./notebooks/pq_comparison.ipynb)
   * The LaTeX file containing the core of the report can be found [here](./reports/Topics/product_quantization.tex)
 
 ## KGraph
 
-  * The notebook is [here](./kgraph.ipynb)
+  * The notebook is [here](./notebooks/kgraph.ipynb)
+  * The LaTeX file containing the core of the report can be found [here](./reports/Topics/kgraph.tex)
+
+## Fair AI Similarity Search (faiss) with GPU
+
+  * The notebook is [here](./notebooks/knn_path.ipynb)
   * The report on the topic can be found [here](./reports/report.pdf)

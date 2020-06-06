@@ -1,8 +1,9 @@
 import numpy as np
 from typing import Optional
 # from scipy.spatial.distance import cdist
+import faiss
+import pyflann
 from time import time
-from pyflann import FLANN
 from datetime import datetime
 from pathlib import Path
 from sklearn.neighbors import NearestNeighbors
@@ -24,9 +25,10 @@ class CustomKMeans(object):
                  nn_autotune: np.float = -1,  # auto-tuning of nn parameters
                  apply_fix: bool = False,
                  save_log: bool = True,
+                 gpu_idx: int = 0,
                  verbose: bool = False):
         
-        assert method in {'kmeans', 'kdtree', 'exact'}
+        assert method in {'kmeans', 'kdtree', 'exact', 'exact-gpu'}
         
         # FLANN hyperparameters
         # The whole list of FLANN parameters is available here:
@@ -50,13 +52,21 @@ class CustomKMeans(object):
             'exact':
             {
                 'algorithm': 'exact'
-            }
+            },
+            'exact-gpu':
+                {
+                    'algorithm': 'exact-gpu'
+                }
         }
-        
+
+        # GPU parameters
+        self.gpu = None
+        self.gpu_idx = gpu_idx
+
         # Nearest neighbors search method set up
         if method in {'kmeans', 'kdtree'}:
-            self.nn_search = FLANN()
-        else:
+            self.nn_search = pyflann.FLANN()
+        elif method == 'exact':
             self.nn_search = NearestNeighbors(
                 n_neighbors=1,
                 algorithm='kd_tree',
@@ -65,6 +75,9 @@ class CustomKMeans(object):
                 p=2,
                 n_jobs=1
             )
+        else:
+            self.nn_search = None
+            self.gpu = faiss.StandardGpuResources()
         
         self.n_centers = n_centers
         self.method = method
@@ -108,6 +121,7 @@ class CustomKMeans(object):
         self.stats_['assignment'].append(time_assign)
         
     def fit(self, data: np.ndarray) -> None:
+        data = data.astype(np.float32)
         self._n_samples, self._dim = data.shape
         
         np.random.seed(self.random_state)
@@ -152,12 +166,21 @@ class CustomKMeans(object):
                             self.sqdist_[to_leave] = sqdist_checked[incorrect]
                 else:
                     self.labels_, self.sqdist_ = labels_, sqdist
-            else:
+            elif self.method == 'exact':
                 self.nn_search.fit(self.centers_)
                 self.sqdist_, self.labels_ = self.nn_search.kneighbors(
                     X=data, return_distance=True)
                 self.sqdist_, self.labels_ = \
                     self.sqdist_.ravel()**2, self.labels_.ravel()
+            else:
+                index_flat = faiss.IndexFlatL2(self._dim)
+                self.nn_search = faiss.index_cpu_to_gpu(self.gpu, self.gpu_idx,
+                                                        index_flat)
+                self.nn_search.add(self.centers_)
+                self.sqdist_, self.labels_ = self.nn_search.search(data, 1)
+                self.sqdist_, self.labels_ = \
+                    self.sqdist_.ravel(), self.labels_.ravel()
+
             toc = time()
             t1 = toc - tic_it
             
@@ -199,7 +222,8 @@ class CustomKMeans(object):
         # Save the log
         self.log_.append(self.time_report())
         if self.save_log:
-            path = Path(f'./logs/{self.__class__.__name__}/').resolve()
+            path = Path(f'../output/logs/'
+                        f'{self.__class__.__name__}/').resolve()
             path.mkdir(parents=True, exist_ok=True)
             with open(f'{str(path)}/{self.session_id}.txt', 'w') as file:
                 for line in self.log_:
